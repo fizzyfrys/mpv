@@ -1,4 +1,4 @@
-add_languages('cpp', native: false)
+# C++ is already declared at project level
 cpp = meson.get_compiler('cpp')
 
 features += {'win32-smtc': cpp.has_header('winrt/base.h', required: get_option('win32-smtc'))}
