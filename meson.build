@@ -318,13 +318,9 @@ darwin = host_machine.system() == 'darwin'
 win32 = host_machine.system() == 'cygwin' or host_machine.system() == 'windows'
 posix = not win32
 
-# Handle C++ library detection on Windows
-# Windows with Clang uses MSVC STL, not libc++
-if win32 and cxx.get_id() == 'clang'
-    # Ensure Windows Clang uses the correct C++ standard library
-    # Windows Clang targets MSVC ABI and uses MSVC STL, not libc++
-    # This configuration prevents Meson from incorrectly detecting libc++ features
-endif
+# C++ library detection on Windows:
+# Windows with Clang uses MSVC STL, not libc++. The C++ compiler is properly
+# initialized above to ensure Meson correctly detects the standard library.
 
 features += {'darwin': darwin}
 features += {'posix': posix}
