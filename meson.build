@@ -1,5 +1,5 @@
 project('mpv',
-        'c',
+        'c', 'cpp',
         license: ['GPL2+', 'LGPL2.1+'],
         version: files('./MPV_VERSION'),
         meson_version: '>=1.3.0',
@@ -271,6 +271,7 @@ sources = files(
 
 # compiler stuff
 cc = meson.get_compiler('c')
+cxx = meson.get_compiler('cpp')
 
 flags = ['-D_FILE_OFFSET_BITS=64']
 flags_c = []
@@ -316,6 +317,10 @@ endif
 darwin = host_machine.system() == 'darwin'
 win32 = host_machine.system() == 'cygwin' or host_machine.system() == 'windows'
 posix = not win32
+
+# C++ library detection on Windows:
+# Windows with Clang uses MSVC STL, not libc++. The C++ compiler is properly
+# initialized above to ensure Meson correctly detects the standard library.
 
 features += {'darwin': darwin}
 features += {'posix': posix}
