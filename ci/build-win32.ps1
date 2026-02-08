@@ -287,7 +287,7 @@ meson setup build `
     --wrap-mode=forcefallback `
     -Ddefault_library=static `
     -Dc_args="-I$amfExtractPath" `
-    -Dlibmpv=false `
+    -Dlibmpv=true `
     -Dtests=true `
     -Dgpl=true `
     -Dffmpeg:gpl=enabled `
@@ -327,7 +327,7 @@ meson setup build `
     -Drubberband=disabled `
     -Dwayland=disabled `
     -Dx11=disabled
-ninja -C build mpv.exe mpv.com
+ninja -C build mpv.exe mpv.com libmpv-2.dll
 cp ./build/subprojects/vulkan-loader/vulkan.dll ./build/vulkan-1.dll
 cp ./etc/mpv-*.bat ./build
 ./build/mpv.com -v --no-config
