@@ -235,6 +235,7 @@ jobs:
             build/mpv.???
             build/mpv-*.bat
             build/vulkan-*.dll
+            build/libmpv-2.dll
             !build/mpv.lib
             !build/mpv.pdb
 
