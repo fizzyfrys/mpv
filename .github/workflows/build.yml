@@ -652,7 +652,7 @@ jobs:
         run: |
           meson test -C build
 
-      - name: Print meson test log
+      - name: Print meson test logg
         if: ${{ failure() && steps.tests.outcome == 'failure' }}
         run: |
           cat ./build/meson-logs/testlog.txt
