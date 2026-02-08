@@ -1,5 +1,5 @@
 project('mpv',
-        'c',
+        'c', 'cpp',
         license: ['GPL2+', 'LGPL2.1+'],
         version: files('./MPV_VERSION'),
         meson_version: '>=1.3.0',
@@ -271,6 +271,7 @@ sources = files(
 
 # compiler stuff
 cc = meson.get_compiler('c')
+cxx = meson.get_compiler('cpp')
 
 flags = ['-D_FILE_OFFSET_BITS=64']
 flags_c = []
@@ -316,6 +317,10 @@ endif
 darwin = host_machine.system() == 'darwin'
 win32 = host_machine.system() == 'cygwin' or host_machine.system() == 'windows'
 posix = not win32
+
+# C++ library detection on Windows:
+# Windows with Clang uses MSVC STL, not libc++. The C++ compiler is properly
+# initialized above to ensure Meson correctly detects the standard library.
 
 features += {'darwin': darwin}
 features += {'posix': posix}
@@ -1798,9 +1803,15 @@ major = client_h_define.split('|')[0].split('<<')[0].strip('() ')
 minor = client_h_define.split('|')[1].strip('() ')
 client_api_version = major + '.' + minor + '.0'
 
+# -Bsymbolic is an ELF linker flag and not compatible with Windows linkers
+libmpv_link_args = []
+if not win32
+    libmpv_link_args = cc.get_supported_link_arguments(['-Wl,-Bsymbolic'])
+endif
+
 libmpv = library('mpv', sources, dependencies: dependencies, gnu_symbol_visibility: 'hidden',
                  include_directories: incdir_public,
-                 link_args: cc.get_supported_link_arguments(['-Wl,-Bsymbolic']),
+                 link_args: libmpv_link_args,
                  version: client_api_version, install: get_option('libmpv'),
                  build_by_default: get_option('libmpv'))
 

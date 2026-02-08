@@ -196,7 +196,7 @@ subrandr_lib = custom_target(
 harfbuzz = dependency('harfbuzz', default_options: ['freetype=enabled'])
 dep = declare_dependency(
   sources: subrandr_build,
-  link_with: subrandr_lib,
+  link_args: [subrandr_lib.full_path()],
   dependencies: [
     harfbuzz,
     # those deps are hardcoded, because parsing rustc native-static-libs, would
